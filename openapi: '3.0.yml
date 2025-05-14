@@ -1,0 +1,151 @@
+openapi: '3.0.3'
+info:
+  title: Closet Manager API
+  version: 1.0.0
+  description: 衣服・コーデ・お気に入りを管理するAPI
+servers:
+  - url: https://api.server.test/v1
+paths:
+  /clothing:
+    get:
+      summary: 自分の服一覧を取得
+      responses:
+        '200':
+          description: 服一覧
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Clothing'
+
+    post:
+      summary: 服を登録
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewClothing'
+      responses:
+        '201':
+          description: 登録成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Clothing'
+
+  /clothing/{id}:
+    get:
+      summary: 特定の服の詳細
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 服の詳細
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Clothing'
+
+    put:
+      summary: 服の情報を更新
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewClothing'
+      responses:
+        '200':
+          description: 更新後の服情報
+
+    delete:
+      summary: 服を削除
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: 削除成功
+
+components:
+  schemas:
+    Clothing:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        category:
+          type: string
+        brand:
+          type: string
+        color:
+          type: string
+        size:
+          type: string
+        material:
+          type: string
+        purchased_at:
+          type: string
+          format: date
+        wear_count:
+          type: integer
+        last_worn_at:
+          type: string
+          format: date
+        season:
+          type: string
+        condition:
+          type: string
+        image_url:
+          type: string
+        notes:
+          type: string
+        user_id:
+          type: string
+          format: uuid
+
+    NewClothing:
+      type: object
+      required: [name, category]
+      properties:
+        name:
+          type: string
+        category:
+          type: string
+        brand:
+          type: string
+        color:
+          type: string
+        size:
+          type: string
+        material:
+          type: string
+        purchased_at:
+          type: string
+          format: date
+        season:
+          type: string
+        condition:
+          type: string
+        image_url:
+          type: string
+        notes:
+          type: string
