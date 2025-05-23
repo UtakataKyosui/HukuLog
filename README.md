@@ -3,87 +3,123 @@
 コーデ管理が簡単に！みたいなやつ
 
 ```mermaid
-erDiagram
-    USER ||--o{ CLOTHING : owns
-    USER ||--o{ OUTFIT : creates
-    OUTFIT ||--o{ OUTFIT_CLOTHING : includes
-    CLOTHING ||--o{ OUTFIT_CLOTHING : part_of
+table USER {
+  "id" UUID [pk] "ユーザーID"
+  "username" string "ユーザー名"
+  "email" string "メールアドレス"
+  "password_hash" string "パスワード（ハッシュ化）"
+  "created_at" datetime "登録日"
+}
 
-    USER ||--o{ FAVORITE_CLOTHING : favorites
-    CLOTHING ||--o{ FAVORITE_CLOTHING : favored_by
+table CLOTHING {
+  "id" UUID [pk] "服のID"
+  "name" string "アイテム名"
+  "category" string "服のカテゴリー"
+  "brand" string "ブランド名"
+  "color" string "色"
+  "size" string "サイズ"
+  "material" string "素材"
+  "purchased_at" date "購入日"
+  "wear_count" int "着用回数"
+  "last_worn_at" date "最後に着た日"
+  "season" string "シーズン"
+  "condition" string "状態"
+  "image_url" string "写真URL"
+  "notes" string "メモ"
+  "user_id" UUID "所有ユーザー"
+}
 
-    USER ||--o{ FAVORITE_OUTFIT : outfit_favorites
-    OUTFIT ||--o{ FAVORITE_OUTFIT : favored_by
+table OUTFIT {
+  "id" UUID [pk] "コーデID"
+  "name" string "コーデ名"
+  "description" string "メモ・説明"
+  "created_at" date "登録日"
+  "image_url" string "コーデ画像"
+  "user_id" UUID "作成ユーザー"
+}
 
-    CLOTHING ||--|| CLOTHING_COLOR : has_color
-    CLOTHING_COLOR {
-        uuid id PK
-        string name
-    }
+table OUTFIT_CLOTHING {
+  "id" UUID [pk] "主キー"
+  "outfit_id" UUID "コーデID"
+  "clothing_id" UUID "服ID"
+}
 
-    CLOTHING ||--|| CLOTHING_MATERIAL : made_of
-    CLOTHING_MATERIAL {
-        uuid id PK
-        string name
-    }
+table FAVORITE_CLOTHING {
+  "id" UUID [pk] "主キー"
+  "user_id" UUID "ユーザーID"
+  "clothing_id" UUID "服ID"
+  "created_at" datetime "登録日時"
+}
 
-    CLOTHING ||--|| CLOTHING_CATEGORY : belongs_to
-    CLOTHING_CATEGORY {
-        uuid id PK
-        string name
-    }
+table FAVORITE_OUTFIT {
+  "id" UUID [pk] "主キー"
+  "user_id" UUID "ユーザーID"
+  "outfit_id" UUID "コーデID"
+  "created_at" datetime "登録日時"
+}
 
-    CLOTHING ||--|| CLOTHING_SEASON : for_season
-    CLOTHING_SEASON {
-        uuid id PK
-        string name
-    }
+table CLOTHING_COLOR {
+  "id" UUID [pk] "色ID"
+  "name" string "色名"
+}
 
-    CLOTHING ||--|| CLOTHING_SIZE : has_size
-    CLOTHING_SIZE {
-        uuid id PK
-        string name
-    }
+table CLOTHING_MATERIAL {
+  "id" UUID [pk] "素材ID"
+  "name" string "素材名"
+}
 
-    CLOTHING ||--|| BRAND : has_brand
-    BRAND {
-        uuid id PK
-        string name
-    }
+table CLOTHING_CATEGORY {
+  "id" UUID [pk] "カテゴリーID"
+  "name" string "カテゴリー名"
+}
 
-    TAG {
-        uuid id PK
-        string name
-        string category
-    }
-    CLOTHING ||--o{ CLOTHING_TAG : tagged_with
-    CLOTHING_TAG {
-        uuid id PK
-        uuid clothing_id FK
-        uuid tag_id FK
-    }
-    OUTFIT ||--o{ OUTFIT_TAG : tagged_with
-    OUTFIT_TAG {
-        uuid id PK
-        uuid outfit_id FK
-        uuid tag_id FK
-    }
+table CLOTHING_SEASON {
+  "id" UUID [pk] "シーズンID"
+  "name" string "シーズン名"
+}
 
-    USER ||--o{ USER_PREFERENCE_TAG : prefers
-    USER_PREFERENCE_TAG {
-        uuid id PK
-        uuid user_id FK
-        uuid tag_id FK
-        int weight
-    }
+table CLOTHING_SIZE {
+  "id" UUID [pk] "サイズID"
+  "name" string "サイズ名"
+}
 
-    CLOTHING ||--o{ CLOTHING_FEATURE : has_feature
-    CLOTHING_FEATURE {
-        uuid id PK
-        uuid clothing_id FK
-        string feature_name
-        float feature_value
-    }
+table BRAND {
+  "id" UUID [pk] "ブランドID"
+  "name" string "ブランド名"
+}
+
+table TAG {
+  "id" UUID [pk] "タグID"
+  "name" string "タグ名"
+  "category" string "タグのカテゴリ"
+}
+
+table CLOTHING_TAG {
+  "id" UUID [pk] "主キー"
+  "clothing_id" UUID "服ID"
+  "tag_id" UUID "タグID"
+}
+
+table OUTFIT_TAG {
+  "id" UUID [pk] "主キー"
+  "outfit_id" UUID "コーデID"
+  "tag_id" UUID "タグID"
+}
+
+table USER_PREFERENCE_TAG {
+  "id" UUID [pk] "主キー"
+  "user_id" UUID "ユーザーID"
+  "tag_id" UUID "タグID"
+  "weight" int "好みの重み付け"
+}
+
+table CLOTHING_FEATURE {
+  "id" UUID [pk] "主キー"
+  "clothing_id" UUID "服ID"
+  "feature_name" string "特徴名"
+  "feature_value" float "特徴値"
+}
+
 ```
 
 ## 📝 各テーブルの構成（実装ガイドつき）
