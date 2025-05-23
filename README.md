@@ -4,6 +4,46 @@
 
 ```mermaid
 erDiagram
+USER ||--o{ CLOTHING : owns
+USER ||--o{ OUTFIT : creates
+OUTFIT ||--o{ OUTFIT_CLOTHING : includes
+CLOTHING ||--o{ OUTFIT_CLOTHING : part_of
+
+USER ||--o{ FAVORITE_CLOTHING : favorites
+CLOTHING ||--o{ FAVORITE_CLOTHING : favored_by
+
+USER ||--o{ FAVORITE_OUTFIT : outfit_favorites
+OUTFIT ||--o{ FAVORITE_OUTFIT : favored_by
+
+CLOTHING ||--o{ CLOTHING_COLOR : has_color
+CLOTHING_COLOR ||--o{ CLOTHING : color_of
+
+CLOTHING ||--o{ CLOTHING_MATERIAL : has_material
+CLOTHING_MATERIAL ||--o{ CLOTHING : material_of
+
+CLOTHING ||--o{ CLOTHING_CATEGORY : has_category
+CLOTHING_CATEGORY ||--o{ CLOTHING : category_of
+
+CLOTHING ||--o{ CLOTHING_SEASON : has_season
+CLOTHING_SEASON ||--o{ CLOTHING : season_of
+
+CLOTHING ||--o{ CLOTHING_SIZE : has_size
+CLOTHING_SIZE ||--o{ CLOTHING : size_of
+
+CLOTHING ||--o{ BRAND : has_brand
+BRAND ||--o{ CLOTHING : brand_of
+
+CLOTHING ||--o{ CLOTHING_TAG : tagged_with
+TAG ||--o{ CLOTHING_TAG : tag_of_clothing
+
+OUTFIT ||--o{ OUTFIT_TAG : tagged_with
+TAG ||--o{ OUTFIT_TAG : tag_of_outfit
+
+USER ||--o{ USER_PREFERENCE_TAG : prefers
+TAG ||--o{ USER_PREFERENCE_TAG : preference_of
+
+CLOTHING ||--o{ CLOTHING_FEATURE : has_feature
+    
 USER {
   id UUID PK "ユーザーID"
   username string "ユーザー名"
