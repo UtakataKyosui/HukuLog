@@ -15,61 +15,75 @@ erDiagram
     USER ||--o{ FAVORITE_OUTFIT : outfit_favorites
     OUTFIT ||--o{ FAVORITE_OUTFIT : favored_by
 
-    USER {
+    CLOTHING ||--|| CLOTHING_COLOR : has_color
+    CLOTHING_COLOR {
         uuid id PK
-        string username
-        string email
-        string password_hash
-        datetime created_at
+        string name
     }
 
-    CLOTHING {
+    CLOTHING ||--|| CLOTHING_MATERIAL : made_of
+    CLOTHING_MATERIAL {
+        uuid id PK
+        string name
+    }
+
+    CLOTHING ||--|| CLOTHING_CATEGORY : belongs_to
+    CLOTHING_CATEGORY {
+        uuid id PK
+        string name
+    }
+
+    CLOTHING ||--|| CLOTHING_SEASON : for_season
+    CLOTHING_SEASON {
+        uuid id PK
+        string name
+    }
+
+    CLOTHING ||--|| CLOTHING_SIZE : has_size
+    CLOTHING_SIZE {
+        uuid id PK
+        string name
+    }
+
+    CLOTHING ||--|| BRAND : has_brand
+    BRAND {
+        uuid id PK
+        string name
+    }
+
+    TAG {
         uuid id PK
         string name
         string category
-        string brand
-        string color
-        string size
-        string material
-        date purchased_at
-        int wear_count
-        date last_worn_at
-        string season
-        string condition
-        string image_url
-        string notes
-        uuid user_id FK
     }
-
-    OUTFIT {
+    CLOTHING ||--o{ CLOTHING_TAG : tagged_with
+    CLOTHING_TAG {
         uuid id PK
-        string name
-        string description
-        date created_at
-        string image_url
-        uuid user_id FK
+        uuid clothing_id FK
+        uuid tag_id FK
     }
-
-    OUTFIT_CLOTHING {
+    OUTFIT ||--o{ OUTFIT_TAG : tagged_with
+    OUTFIT_TAG {
         uuid id PK
         uuid outfit_id FK
-        uuid clothing_id FK
+        uuid tag_id FK
     }
 
-    FAVORITE_CLOTHING {
+    USER ||--o{ USER_PREFERENCE_TAG : prefers
+    USER_PREFERENCE_TAG {
         uuid id PK
         uuid user_id FK
-        uuid clothing_id FK
-        datetime created_at
+        uuid tag_id FK
+        int weight
     }
 
-    FAVORITE_OUTFIT {
+    CLOTHING ||--o{ CLOTHING_FEATURE : has_feature
+    CLOTHING_FEATURE {
         uuid id PK
-        uuid user_id FK
-        uuid outfit_id FK
-        datetime created_at
+        uuid clothing_id FK
+        string feature_name
+        float feature_value
     }
-
 ```
 
 ## 📝 各テーブルの構成（実装ガイドつき）
