@@ -3,16 +3,17 @@
 コーデ管理が簡単に！みたいなやつ
 
 ```mermaid
-table USER {
-  "id" UUID [pk] "ユーザーID"
+erDiagram
+USER {
+  "id" UUID PK "ユーザーID"
   "username" string "ユーザー名"
   "email" string "メールアドレス"
   "password_hash" string "パスワード（ハッシュ化）"
   "created_at" datetime "登録日"
 }
 
-table CLOTHING {
-  "id" UUID [pk] "服のID"
+CLOTHING {
+  "id" UUID PK "服のID"
   "name" string "アイテム名"
   "category" string "服のカテゴリー"
   "brand" string "ブランド名"
@@ -29,8 +30,8 @@ table CLOTHING {
   "user_id" UUID "所有ユーザー"
 }
 
-table OUTFIT {
-  "id" UUID [pk] "コーデID"
+OUTFIT {
+  "id" UUID PK "コーデID"
   "name" string "コーデ名"
   "description" string "メモ・説明"
   "created_at" date "登録日"
@@ -38,83 +39,83 @@ table OUTFIT {
   "user_id" UUID "作成ユーザー"
 }
 
-table OUTFIT_CLOTHING {
-  "id" UUID [pk] "主キー"
+OUTFIT_CLOTHING {
+  "id" UUID PK "主キー"
   "outfit_id" UUID "コーデID"
   "clothing_id" UUID "服ID"
 }
 
-table FAVORITE_CLOTHING {
-  "id" UUID [pk] "主キー"
+FAVORITE_CLOTHING {
+  "id" UUID PK "主キー"
   "user_id" UUID "ユーザーID"
   "clothing_id" UUID "服ID"
   "created_at" datetime "登録日時"
 }
 
-table FAVORITE_OUTFIT {
-  "id" UUID [pk] "主キー"
+FAVORITE_OUTFIT {
+  "id" UUID PK "主キー"
   "user_id" UUID "ユーザーID"
   "outfit_id" UUID "コーデID"
   "created_at" datetime "登録日時"
 }
 
-table CLOTHING_COLOR {
-  "id" UUID [pk] "色ID"
+CLOTHING_COLOR {
+  "id" UUID PK "色ID"
   "name" string "色名"
 }
 
-table CLOTHING_MATERIAL {
-  "id" UUID [pk] "素材ID"
+CLOTHING_MATERIAL {
+  "id" UUID PK "素材ID"
   "name" string "素材名"
 }
 
-table CLOTHING_CATEGORY {
-  "id" UUID [pk] "カテゴリーID"
+CLOTHING_CATEGORY {
+  "id" UUID PK "カテゴリーID"
   "name" string "カテゴリー名"
 }
 
-table CLOTHING_SEASON {
-  "id" UUID [pk] "シーズンID"
+CLOTHING_SEASON {
+  "id" UUID PK "シーズンID"
   "name" string "シーズン名"
 }
 
-table CLOTHING_SIZE {
-  "id" UUID [pk] "サイズID"
+CLOTHING_SIZE {
+  "id" UUID PK "サイズID"
   "name" string "サイズ名"
 }
 
-table BRAND {
-  "id" UUID [pk] "ブランドID"
+BRAND {
+  "id" UUID PK "ブランドID"
   "name" string "ブランド名"
 }
 
-table TAG {
-  "id" UUID [pk] "タグID"
+TAG {
+  "id" UUID PK "タグID"
   "name" string "タグ名"
   "category" string "タグのカテゴリ"
 }
 
-table CLOTHING_TAG {
-  "id" UUID [pk] "主キー"
+CLOTHING_TAG {
+  "id" UUID PK "主キー"
   "clothing_id" UUID "服ID"
   "tag_id" UUID "タグID"
 }
 
-table OUTFIT_TAG {
-  "id" UUID [pk] "主キー"
+OUTFIT_TAG {
+  "id" UUID pk "主キー"
   "outfit_id" UUID "コーデID"
   "tag_id" UUID "タグID"
 }
 
-table USER_PREFERENCE_TAG {
-  "id" UUID [pk] "主キー"
+USER_PREFERENCE_TAG {
+  "id" UUID pk "主キー"
   "user_id" UUID "ユーザーID"
   "tag_id" UUID "タグID"
   "weight" int "好みの重み付け"
 }
 
-table CLOTHING_FEATURE {
-  "id" UUID [pk] "主キー"
+CLOTHING_FEATURE {
+  "id" UUID pk "主キー"
   "clothing_id" UUID "服ID"
   "feature_name" string "特徴名"
   "feature_value" float "特徴値"
