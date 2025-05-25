@@ -26,6 +26,15 @@
 
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
 	// "remoteUser": "root"
-	"postCreateCommand": "echo 'eval \"$(mise activate bash)\"' >> ~/.bashrc && sudo chmod -R 777 ."
+	"postCreateCommand": "echo 'eval \"$(mise activate bash)\"' >> ~/.bashrc && sudo chmod -R 777 .",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"SwiftlyDaniel.oklch-color-visualiser",
+				"walnuts1018.oklch-vscode",
+				"origin-space.shadcn-color-tool"
+			]
+		}
+	}
 
 }

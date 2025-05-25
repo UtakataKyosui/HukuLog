@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "embla-carousel-auto-scroll": "^8.6.0",
+    "embla-carousel-autoplay": "^8.6.0",
+    "motion": "^12.12.2"
+  }
+}
