@@ -7,10 +7,20 @@
 	// "features": {
 	// 	"ghcr.io/devcontainers-extra/features/mise:1": {}
 	// },
-  "build": {
-    "dockerfile": "Dockerfile.frontend"
-  },
-  "remoteUser": "utakata",
+
+	/// フロントエンドは以下の4行を使用。
+	// "build": {
+	// 	"dockerfile": "Dockerfile.frontend"
+	// },
+	// "remoteUser": "utakata",
+
+	/// バックエンドは、以下の設定を使用。
+	"dockerComposeFile": "backend-compose.yaml",
+    "service": "app",
+	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+    "forwardPorts": [
+        5150
+    ],
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
