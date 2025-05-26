@@ -1,0 +1,27 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/ubuntu
+{
+	"name": "Ubuntu",
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
+	"remoteUser": "utakata",
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	"forwardPorts": [3000],
+
+	// Configure tool-specific properties.
+	// "customizations": {},
+
+	"postCreateCommand": "echo 'eval \"$(mise activate bash)\"' >> ~/.bashrc && sudo chmod -R 777 .",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"SwiftlyDaniel.oklch-color-visualiser",
+				"walnuts1018.oklch-vscode",
+				"origin-space.shadcn-color-tool"
+			]
+		}
+	}
+
+}
