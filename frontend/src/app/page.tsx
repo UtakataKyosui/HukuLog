@@ -5,14 +5,14 @@ import {
 	Card,
 	CardContent,
 	CardDescription,
-	CardFooter,
 	CardHeader,
 	CardTitle,
-  } from "@/components/ui/card"
+} from "@/components/ui/card"
 import BackgroundLinearImage from "@/components/background/BackgroundLinearImage";
 import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
 import Link from "next/link";
+import { Shirt, Sparkles, Shield, Zap, ArrowRight } from "lucide-react";
 
 export default function Home() {
 	useEffect(() => {
@@ -22,50 +22,119 @@ export default function Home() {
 		}
 	},[])
   return (
-	<main className="container mx-auto px-[5vw] flex flex-col justify-center items-center gap-10 my-5"> 
-		<section className="w-[40%] border rounded-xl bg-white/80 p-1 shadow-md">
-			<div className="text-center">
-				<h3 className="text-xl">服の困りごと、ありませんか？</h3>
-				<p className="text-sm text-slate-500">HukuLogは、あなたの困りごとを解決します</p>
+	<main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+		{/* Hero Section */}
+		<section className="container mx-auto px-4 pt-20 pb-16 text-center">
+			<div className="max-w-4xl mx-auto">
+				<h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+					服の困りごと、
+					<span className="text-blue-600">ありませんか？</span>
+				</h1>
+				<p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+					HukuLogは、あなたのクローゼットを整理し、毎日のコーディネートを楽しくする
+					デジタルクローゼットアプリです
+				</p>
+				<div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+					<Button asChild size="lg" className="text-lg px-8 py-3">
+						<Link href="/auth" className="flex items-center gap-2">
+							使ってみる！
+							<ArrowRight className="h-5 w-5" />
+						</Link>
+					</Button>
+					<Button asChild variant="outline" size="lg" className="text-lg px-8 py-3">
+						<Link href="#features">
+							詳しく見る
+						</Link>
+					</Button>
+				</div>
 			</div>
 		</section>
 
 		<BackgroundLinearImage />
-		<section className="flex gap-6 w-[80%]">
-			<Card className="w-full">
-				<CardHeader>
-					<CardTitle>
-						最適な服の管理方法をあなたに
-					</CardTitle>
-					<CardDescription>
-						服の管理をして、毎日おしゃれな着こなしをしてみよう。
-					</CardDescription>
-				</CardHeader>
-				<CardContent>
-					クローゼットの奥に眠ってる服、もったいないですよね？ HukuLogで全部の服を「見える化」しちゃいましょう！ 持ってる服を最大限に活かして、ムダな衝動買いも減らせるかも？ 今日からあなたのファッションライフをアップデート！
-				</CardContent>	
-			</Card>
-			<Card className="w-full">
-				<CardHeader>
-					<CardTitle>
-						服の正しい洗濯方法がなんだったかを思い出そう
-					</CardTitle>
-					<CardDescription>
-						服についてたタグ、処分してから洗濯方法忘れちゃってない？
-					</CardDescription>
-				</CardHeader>
-				<CardContent>
-					「あっ！この服のタグ、捨てちゃった…どうやって洗えばいいんだっけ？」って、あるあるですよね？ HukuLogなら、服ごとに洗濯方法やお手入れのコツをメモっておけるんです。これで、お気に入りの服をうっかりダメにしちゃう心配もなし！
-				</CardContent>
-			</Card>
+
+		{/* Features Section */}
+		<section id="features" className="container mx-auto px-4 py-16">
+			<div className="text-center mb-16">
+				<h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+					HukuLogの特徴
+				</h2>
+				<p className="text-lg text-gray-600 max-w-2xl mx-auto">
+					あなたのファッションライフをより豊かにする機能をご紹介します
+				</p>
+			</div>
+
+			<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+				<Card className="border-0 shadow-lg hover:shadow-xl transition-shadow duration-300">
+					<CardHeader className="text-center">
+						<div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+							<Shirt className="h-8 w-8 text-blue-600" />
+						</div>
+						<CardTitle className="text-xl">
+							服の見える化
+						</CardTitle>
+						<CardDescription>
+							クローゼットの中身を整理して管理
+						</CardDescription>
+					</CardHeader>
+					<CardContent className="text-center">
+						クローゼットの奥に眠ってる服、もったいないですよね？ HukuLogで全部の服を「見える化」しちゃいましょう！
+					</CardContent>	
+				</Card>
+
+				<Card className="border-0 shadow-lg hover:shadow-xl transition-shadow duration-300">
+					<CardHeader className="text-center">
+						<div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+							<Sparkles className="h-8 w-8 text-green-600" />
+						</div>
+						<CardTitle className="text-xl">
+							コーディネート提案
+						</CardTitle>
+						<CardDescription>
+							AIがあなたにぴったりのコーデを提案
+						</CardDescription>
+					</CardHeader>
+					<CardContent className="text-center">
+						持ってる服を最大限に活かして、ムダな衝動買いも減らせるかも？ 今日からあなたのファッションライフをアップデート！
+					</CardContent>
+				</Card>
+
+				<Card className="border-0 shadow-lg hover:shadow-xl transition-shadow duration-300">
+					<CardHeader className="text-center">
+						<div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+							<Shield className="h-8 w-8 text-purple-600" />
+						</div>
+						<CardTitle className="text-xl">
+							お手入れ管理
+						</CardTitle>
+						<CardDescription>
+							洗濯方法やケア方法を記録
+						</CardDescription>
+					</CardHeader>
+					<CardContent className="text-center">
+						「あっ！この服のタグ、捨てちゃった…どうやって洗えばいいんだっけ？」HukuLogなら、服ごとにお手入れ方法をメモできます。
+					</CardContent>
+				</Card>
+			</div>
 		</section>
-		<Button asChild variant="default" className="w-[8vw] h-[5vh] font-bold">
-			<Link href="/auth">
-				使ってみる！
-			</Link>
-		</Button>
+
+		{/* CTA Section */}
+		<section className="bg-blue-600 text-white py-16">
+			<div className="container mx-auto px-4 text-center">
+				<h2 className="text-3xl md:text-4xl font-bold mb-4">
+					今すぐHukuLogを始めよう
+				</h2>
+				<p className="text-xl mb-8 opacity-90">
+					無料でアカウントを作成して、あなたのデジタルクローゼットを作りましょう
+				</p>
+				<Button asChild size="lg" variant="secondary" className="text-lg px-8 py-3">
+					<Link href="/auth" className="flex items-center gap-2">
+						<Zap className="h-5 w-5" />
+						無料で始める
+					</Link>
+				</Button>
+			</div>
+		</section>
 	</main>
-    
   )
 }
 
