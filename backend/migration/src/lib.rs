@@ -2,6 +2,7 @@
 #![allow(clippy::wildcard_imports)]
 pub use sea_orm_migration::prelude::*;
 mod m20220101_000001_users;
+mod m20250528_155508_create_clothings;
 
 mod m20250527_015826_add_parent_ref_to_categories;
 mod m20250527_020005_add_tag_category_ref_to_tags;
@@ -32,6 +33,7 @@ impl MigratorTrait for Migrator {
     fn migrations() -> Vec<Box<dyn MigrationTrait>> {
         vec![
             Box::new(m20220101_000001_users::Migration),
+            Box::new(m20250528_155508_create_clothings::Migration),
             Box::new(m20250527_015826_add_parent_ref_to_categories::Migration),
             Box::new(m20250527_020005_add_tag_category_ref_to_tags::Migration),
             Box::new(m20250527_020141_add_user_ref_to_clothings::Migration),
