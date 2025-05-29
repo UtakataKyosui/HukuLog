@@ -3,6 +3,7 @@ FROM rust:1.78-slim-bookworm AS builder
 WORKDIR /app
 
 COPY Cargo.toml Cargo.lock ./
+COPY migration ./migration
 
 RUN cargo build --release
 
