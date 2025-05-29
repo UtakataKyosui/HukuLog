@@ -103,7 +103,7 @@ pub fn routes() -> Routes {
         .prefix("/api/clothings")
         .add("/", post(create))
         .add("/", get(list))
-        .add("/:id", get(get_one))
-        .add("/:id", put(update))
-        .add("/:id", axum::routing::delete(delete))
+        .add("/{id}", get(get_one))
+        .add("/{id}", put(update))
+        .add("/{id}", axum::routing::delete(delete))
 }

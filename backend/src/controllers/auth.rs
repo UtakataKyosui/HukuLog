@@ -116,12 +116,23 @@ async fn reset(State(ctx): State<AppContext>, Json(params): Json<ResetParams>) -
 /// Creates a user login and returns a token
 #[debug_handler]
 async fn login(State(ctx): State<AppContext>, Json(params): Json<LoginParams>) -> Result<Response> {
+    tracing::info!("Login attempt for email: {}", params.email);
+    
     let user = users::Model::find_by_email(&ctx.db, &params.email).await?;
+    tracing::info!("User found: {}, email_verified_at: {:?}", user.email, user.email_verified_at);
 
     let valid = user.verify_password(&params.password);
+    tracing::info!("Password valid: {}", valid);
 
     if !valid {
+        tracing::warn!("Invalid password for user: {}", params.email);
         return unauthorized("unauthorized!");
+    }
+
+    // Check if user email is verified
+    if user.email_verified_at.is_none() {
+        tracing::warn!("Email not verified for user: {}", params.email);
+        return unauthorized("email not verified!");
     }
 
     let jwt_secret = ctx.config.get_jwt_config()?;
@@ -130,6 +141,7 @@ async fn login(State(ctx): State<AppContext>, Json(params): Json<LoginParams>) -
         .generate_jwt(&jwt_secret.secret, jwt_secret.expiration)
         .or_else(|_| unauthorized("unauthorized!"))?;
 
+    tracing::info!("Login successful for user: {}", params.email);
     format::json(LoginResponse::new(&user, &token))
 }
 
