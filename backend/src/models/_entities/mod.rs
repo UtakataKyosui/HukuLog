@@ -3,4 +3,6 @@
 pub mod prelude;
 
 pub mod clothings;
+pub mod outfit_clothing;
+pub mod outfits;
 pub mod users;

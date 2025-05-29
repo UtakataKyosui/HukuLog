@@ -4,22 +4,17 @@ use sea_orm::entity::prelude::*;
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq, Serialize, Deserialize)]
-#[sea_orm(table_name = "clothings")]
+#[sea_orm(table_name = "outfits")]
 pub struct Model {
     pub created_at: DateTimeWithTimeZone,
     pub updated_at: DateTimeWithTimeZone,
     #[sea_orm(primary_key)]
-    pub id: Uuid,
+    pub id: i32,
+    pub pid: Uuid,
     pub name: String,
-    pub purchased_at: Option<Date>,
-    pub purchase_price: Option<Decimal>,
+    pub description: Option<String>,
     pub image_url: Option<String>,
-    pub notes: Option<String>,
     pub user_id: Option<i32>,
-    pub brand_id: Option<Uuid>,
-    pub category_id: Option<Uuid>,
-    pub size_id: Option<Uuid>,
-    pub condition_id: Option<Uuid>,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
@@ -46,13 +41,13 @@ impl Related<super::outfit_clothing::Entity> for Entity {
     }
 }
 
-impl Related<super::outfits::Entity> for Entity {
+impl Related<super::clothings::Entity> for Entity {
     fn to() -> RelationDef {
-        super::outfit_clothing::Relation::Outfits.def()
+        super::outfit_clothing::Relation::Clothings.def()
     }
     
     fn via() -> Option<RelationDef> {
-        Some(super::outfit_clothing::Relation::Clothings.def().rev())
+        Some(super::outfit_clothing::Relation::Outfits.def().rev())
     }
 }
 

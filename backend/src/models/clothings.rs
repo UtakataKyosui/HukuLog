@@ -1,5 +1,5 @@
 use loco_rs::prelude::*;
-use sea_orm::{QueryOrder, QuerySelect, PaginatorTrait};
+use sea_orm::{QueryOrder, QuerySelect, PaginatorTrait, ActiveValue};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 use validator::Validate;
@@ -49,20 +49,34 @@ impl Model {
         user_id: i32,
         params: &CreateClothingParams,
     ) -> ModelResult<Self> {
+        let id = Uuid::new_v4();
         let clothing = clothings::ActiveModel {
-            id: ActiveValue::Set(Uuid::new_v4()),
+            id: ActiveValue::Set(id),
             name: ActiveValue::Set(params.name.clone()),
             purchased_at: ActiveValue::Set(params.purchased_at),
             purchase_price: ActiveValue::Set(params.purchase_price),
             image_url: ActiveValue::Set(params.image_url.clone()),
             notes: ActiveValue::Set(params.notes.clone()),
             user_id: ActiveValue::Set(Some(user_id)),
+            brand_id: ActiveValue::Set(None),
+            category_id: ActiveValue::Set(None),
+            size_id: ActiveValue::Set(None),
+            condition_id: ActiveValue::Set(None),
             ..Default::default()
-        }
-        .insert(db)
-        .await?;
+        };
 
-        Ok(clothing)
+        // Try to insert, and if it fails with UnpackInsertId, fetch the record
+        match clothing.insert(db).await {
+            Ok(model) => Ok(model),
+            Err(sea_orm::DbErr::UnpackInsertId) => {
+                // The record was likely inserted successfully, fetch it by ID
+                clothings::Entity::find_by_id(id)
+                    .one(db)
+                    .await?
+                    .ok_or_else(|| ModelError::EntityNotFound)
+            }
+            Err(e) => Err(e.into())
+        }
     }
 
     /// Updates an existing clothing item

@@ -1,21 +1,47 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Eye, EyeOff, Mail, Lock } from "lucide-react"
+import { login } from "@/lib/api"
 
 export default function LogInForm() {
 	const [showPassword, setShowPassword] = useState(false)
 	const [email, setEmail] = useState("")
 	const [password, setPassword] = useState("")
+	const [isLoading, setIsLoading] = useState(false)
+	const [error, setError] = useState("")
+	const router = useRouter()
 
-	const handleSubmit = (e: React.FormEvent) => {
+	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault()
-		// TODO: Implement login logic
-		console.log("Login attempt:", { email, password })
+		setIsLoading(true)
+		setError("")
+
+		try {
+			const response = await login({ email, password })
+			
+			// Store the token in localStorage
+			localStorage.setItem('token', response.token)
+			localStorage.setItem('user', JSON.stringify({
+				id: response.pid,
+				name: response.name,
+				email: email,
+				isVerified: response.is_verified
+			}))
+
+			// Redirect to home page
+			router.push('/')
+		} catch (err: any) {
+			console.error('Login error:', err)
+			setError(err.message || 'ログインに失敗しました')
+		} finally {
+			setIsLoading(false)
+		}
 	}
 
 	return (
@@ -28,6 +54,11 @@ export default function LogInForm() {
 			</CardHeader>
 			<CardContent>
 				<form onSubmit={handleSubmit} className="space-y-4">
+					{error && (
+						<div className="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md">
+							{error}
+						</div>
+					)}
 					<div className="space-y-2">
 						<Label htmlFor="email">メールアドレス</Label>
 						<div className="relative">
@@ -40,6 +71,7 @@ export default function LogInForm() {
 								onChange={(e) => setEmail(e.target.value)}
 								className="pl-10"
 								required
+								disabled={isLoading}
 							/>
 						</div>
 					</div>
@@ -55,18 +87,20 @@ export default function LogInForm() {
 								onChange={(e) => setPassword(e.target.value)}
 								className="pl-10 pr-10"
 								required
+								disabled={isLoading}
 							/>
 							<button
 								type="button"
 								onClick={() => setShowPassword(!showPassword)}
 								className="absolute right-3 top-3 h-4 w-4 text-gray-400 hover:text-gray-600"
+								disabled={isLoading}
 							>
 								{showPassword ? <EyeOff /> : <Eye />}
 							</button>
 						</div>
 					</div>
-					<Button type="submit" className="w-full">
-						ログイン
+					<Button type="submit" className="w-full" disabled={isLoading}>
+						{isLoading ? "ログイン中..." : "ログイン"}
 					</Button>
 				</form>
 			</CardContent>
