@@ -2,17 +2,40 @@
 前から話してた電子クローゼット。
 コーデ管理が簡単に！みたいなやつ
 
+## 🔐 認証システム
+
+HukuLogは**Passkey認証**を採用しており、パスワード不要で安全にログインできます。
+
+### Passkey認証の特徴
+- 🔒 **パスワード不要**: 指紋認証、顔認証、またはセキュリティキーでログイン
+- 🛡️ **高セキュリティ**: フィッシング攻撃に対する耐性
+- 📱 **デバイス連携**: 複数デバイスでの認証情報同期
+- ⚡ **高速ログイン**: ワンタッチでの認証
+
+### 認証方法
+1. **Passkey登録**: メールアドレスを入力してPasskeyを登録
+2. **Passkeyログイン**: 登録済みのPasskeyで認証
+3. **従来ログイン**: メールアドレス＋パスワード（既存ユーザー向け）
+
+### 技術仕様
+- **バックエンド**: WebAuthn-rs (Rust)
+- **フロントエンド**: @simplewebauthn/browser (TypeScript)
+- **認証フロー**: WebAuthn Level 2準拠
+
 ## 📝 各テーブルの構成（実装ガイドつき）
 
 ### 🔹 `USER`
 
-| カラム名            | 型         | 説明           |
-| --------------- | --------- | ------------ |
-| `id`            | UUID (PK) | ユーザーID       |
-| `username`      | string    | ユーザー名        |
-| `email`         | string    | メールアドレス      |
-| `password_hash` | string    | パスワード（ハッシュ化） |
-| `created_at`    | datetime  | 登録日          |
+| カラム名                        | 型         | 説明                    |
+| --------------------------- | --------- | --------------------- |
+| `id`                        | UUID (PK) | ユーザーID                |
+| `username`                  | string    | ユーザー名                 |
+| `email`                     | string    | メールアドレス               |
+| `password_hash`             | string    | パスワード（ハッシュ化）          |
+| `passkey_credentials`       | JSON      | Passkey認証情報（WebAuthn） |
+| `passkey_challenge`         | string    | Passkey認証チャレンジ        |
+| `passkey_challenge_expiration` | datetime  | チャレンジ有効期限             |
+| `created_at`                | datetime  | 登録日                   |
 
 ---
 
