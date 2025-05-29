@@ -27,6 +27,7 @@ mod m20250527_024308_add_user_ref_to_wear_histories;
 mod m20250527_024438_add_clothing_ref_to_wear_histories;
 mod m20250527_024612_add_outfit_ref_to_wear_histories;
 mod m20250529_025731_add_passkey_fields_to_users;
+mod m20250529_031410_remove_magic_link_fields;
 pub struct Migrator;
 
 #[async_trait::async_trait]
@@ -59,6 +60,7 @@ impl MigratorTrait for Migrator {
             // Box::new(m20250527_024308_add_user_ref_to_wear_histories::Migration),
             // Box::new(m20250527_024438_add_clothing_ref_to_wear_histories::Migration),
             // Box::new(m20250527_024612_add_outfit_ref_to_wear_histories::Migration),
+            Box::new(m20250529_031410_remove_magic_link_fields::Migration),
             // inject-above (do not remove this comment)
         ]
     }

@@ -1,9 +1,40 @@
-# Welcome to Loco :train:
+# HukuLog Backend :train:
 
-[Loco](https://loco.rs) is a web and API framework running on Rust.
+HukuLogのバックエンドAPI。[Loco](https://loco.rs) フレームワークを使用したRustアプリケーション。
 
-This is the **SaaS starter** which includes a `User` model and authentication based on JWT.
-It also include configuration sections that help you pick either a frontend or a server-side template set up for your fullstack server.
+## 🔐 認証システム
+
+### Passkey認証 (WebAuthn)
+- **WebAuthn Level 2準拠**のPasskey認証を実装
+- パスワード不要の安全な認証
+- 指紋認証、顔認証、セキュリティキーに対応
+
+### 認証エンドポイント
+- `POST /api/passkey/register/begin` - Passkey登録開始
+- `POST /api/passkey/register/finish` - Passkey登録完了
+- `POST /api/passkey/authenticate/begin` - Passkey認証開始
+- `POST /api/passkey/authenticate/finish` - Passkey認証完了
+
+### 従来認証
+- `POST /api/auth/login` - メール＋パスワードログイン
+- `POST /api/auth/register` - 新規ユーザー登録
+- `POST /api/auth/forgot` - パスワードリセット
+
+## 🗄️ データベース
+
+### Passkey関連フィールド
+- `passkey_credentials` (JSON) - WebAuthn認証情報
+- `passkey_challenge` (String) - 認証チャレンジ
+- `passkey_challenge_expiration` (Timestamp) - チャレンジ有効期限
+
+### マイグレーション
+```bash
+# Passkeyフィールド追加
+cargo loco db migrate
+
+# 開発用データベースリセット
+cargo loco db reset
+```
 
 
 ## Quick Start

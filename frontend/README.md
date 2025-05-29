@@ -1,4 +1,22 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# HukuLog Frontend
+
+HukuLogのフロントエンドアプリケーション。[Next.js](https://nextjs.org) + TypeScript + Tailwind CSSで構築。
+
+## 🔐 Passkey認証
+
+### 認証コンポーネント
+- `PasskeyAuth` - Passkey登録・認証UI
+- `LogInForm` - 従来のメール＋パスワードログイン
+- `SignUpForm` - 新規ユーザー登録
+
+### 認証フロー
+1. **Passkey登録**: メールアドレス入力 → WebAuthn登録 → 認証情報保存
+2. **Passkeyログイン**: メールアドレス入力 → WebAuthn認証 → JWTトークン取得
+
+### 技術スタック
+- **WebAuthn**: @simplewebauthn/browser
+- **UI**: Radix UI + Tailwind CSS
+- **アイコン**: Lucide React
 
 ## Getting Started
 
