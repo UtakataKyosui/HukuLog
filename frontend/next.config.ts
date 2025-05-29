@@ -5,13 +5,11 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/api/:path*',
-        destination: process.env.INTERNAL_API_URL + '/api/:path*',
+        destination: `${process.env.INTERNAL_API_URL ? process.env.INTERNAL_API_URL : "http://localhost:5151"}/api/:path*`,
       },
     ];
   },
-  experimental: {
-    serverComponentsExternalPackages: ['@simplewebauthn/browser'],
-  },
+  serverExternalPackages: ['@simplewebauthn/browser'],
   output: 'standalone',
 };
 

@@ -1,24 +1,29 @@
-FROM rust:1.81-slim-bookworm AS builder
+FROM rust:1.82-slim-bookworm AS builder
+
+RUN apt-get update -y && \
+	apt-get upgrade -y &&  \
+	apt-get install -y libssl-dev pkg-config
 
 WORKDIR /app
 
 COPY Cargo.toml Cargo.lock ./
 COPY migration ./migration
 
-RUN cargo build --release
-
 COPY src ./src
+RUN cargo build --release
 
 RUN cargo build --release
 
 FROM debian:bookworm-slim AS runtime
 
+RUN apt-get update -y && \
+    apt-get install -y libssl3
+
 WORKDIR /app
 
 COPY --from=builder /app/target/release/backend-cli ./
+COPY config ./config  
 
-EXPOSE 8000
+EXPOSE 5151
 
-
-
-CMD ["./backend-cli"]\n
+CMD ["./backend-cli","start"]
