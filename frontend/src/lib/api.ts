@@ -98,7 +98,7 @@ class ApiClient {
     this.token = token;
   }
 
-  public async request<T>(
+  private async request<T>(
     endpoint: string,
     options: RequestInit = {}
   ): Promise<T> {
