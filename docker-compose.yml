@@ -1,12 +1,32 @@
 version: "3.9"
 
 services:
+  db:
+    image: postgres:16-alpine
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: hukulog
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: hukulog
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hukulog -d hukulog"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
   backend:
     build: ./backend
     ports:
       - "8000:8000"
     environment:
       - RUST_LOG=info
+      - DATABASE_URL=postgres://hukulog:password@db:5432/hukulog
+    depends_on:
+      - db
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
@@ -19,8 +39,12 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - NEXT_PUBLIC_API_URL=http://localhost:8000
+      - NEXT_PUBLIC_API_URL=http://backend:8000
       - INTERNAL_API_URL=http://backend:8000
     depends_on:
       - backend
+      - db
     restart: unless-stopped
+
+volumes:
+  db_data:
