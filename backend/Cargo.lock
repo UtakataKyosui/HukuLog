@@ -545,6 +545,7 @@ dependencies = [
  "chrono",
  "include_dir",
  "insta",
+ "lazy_static",
  "loco-rs",
  "migration",
  "regex",

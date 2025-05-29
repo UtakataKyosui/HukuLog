@@ -4,6 +4,7 @@ use loco_rs::{auth::jwt, hash, prelude::*};
 use serde::{Deserialize, Serialize};
 use serde_json::Map;
 use uuid::Uuid;
+use webauthn_rs::prelude::*;
 
 pub use super::_entities::users::{self, ActiveModel, Entity, Model};
 
@@ -363,5 +364,98 @@ impl ActiveModel {
         self.magic_link_token = ActiveValue::set(None);
         self.magic_link_expiration = ActiveValue::set(None);
         Ok(self.update(db).await?)
+    }
+
+    /// Store passkey credentials
+    ///
+    /// # Errors
+    /// - Returns an error if database update fails or serialization fails
+    pub async fn store_passkey_credentials(
+        mut self,
+        db: &DatabaseConnection,
+        credentials: &[Passkey],
+    ) -> ModelResult<Model> {
+        let creds_json = serde_json::to_value(credentials)
+            .map_err(|e| ModelError::Any(e.into()))?;
+        
+        self.passkey_credentials = ActiveValue::set(Some(creds_json));
+        Ok(self.update(db).await?)
+    }
+
+    /// Set passkey challenge
+    ///
+    /// # Errors
+    /// - Returns an error if database update fails
+    pub async fn set_passkey_challenge(
+        mut self,
+        db: &DatabaseConnection,
+        challenge: &str,
+        expiration: chrono::DateTime<chrono::Utc>,
+    ) -> ModelResult<Model> {
+        self.passkey_challenge = ActiveValue::set(Some(challenge.to_string()));
+        self.passkey_challenge_expiration = ActiveValue::set(Some(expiration.into()));
+        Ok(self.update(db).await?)
+    }
+
+    /// Clear passkey challenge
+    ///
+    /// # Errors
+    /// - Returns an error if database update fails
+    pub async fn clear_passkey_challenge(mut self, db: &DatabaseConnection) -> ModelResult<Model> {
+        self.passkey_challenge = ActiveValue::set(None);
+        self.passkey_challenge_expiration = ActiveValue::set(None);
+        Ok(self.update(db).await?)
+    }
+}
+
+impl Model {
+    /// Get stored passkey credentials
+    ///
+    /// # Errors
+    /// - Returns an error if credentials cannot be deserialized
+    pub fn get_passkey_credentials(&self) -> ModelResult<Vec<Passkey>> {
+        match &self.passkey_credentials {
+            Some(creds_json) => {
+                let creds: Vec<Passkey> = serde_json::from_value(creds_json.clone())
+                    .map_err(|e| ModelError::Any(e.into()))?;
+                Ok(creds)
+            }
+            None => Ok(vec![]),
+        }
+    }
+
+    /// Verify passkey challenge
+    #[must_use]
+    pub fn verify_passkey_challenge(&self, challenge: &str) -> bool {
+        if let (Some(stored_challenge), Some(expiration)) = 
+            (&self.passkey_challenge, &self.passkey_challenge_expiration) {
+            let now = chrono::Utc::now().fixed_offset();
+            return stored_challenge == challenge && expiration > &now;
+        }
+        false
+    }
+
+    /// Convert to ActiveModel for updating
+    pub fn into_active_model(self) -> ActiveModel {
+        ActiveModel {
+            id: ActiveValue::unchanged(self.id),
+            pid: ActiveValue::unchanged(self.pid),
+            email: ActiveValue::unchanged(self.email),
+            password: ActiveValue::unchanged(self.password),
+            api_key: ActiveValue::unchanged(self.api_key),
+            name: ActiveValue::unchanged(self.name),
+            reset_token: ActiveValue::unchanged(self.reset_token),
+            reset_sent_at: ActiveValue::unchanged(self.reset_sent_at),
+            email_verification_token: ActiveValue::unchanged(self.email_verification_token),
+            email_verification_sent_at: ActiveValue::unchanged(self.email_verification_sent_at),
+            email_verified_at: ActiveValue::unchanged(self.email_verified_at),
+            magic_link_token: ActiveValue::unchanged(self.magic_link_token),
+            magic_link_expiration: ActiveValue::unchanged(self.magic_link_expiration),
+            passkey_credentials: ActiveValue::unchanged(self.passkey_credentials),
+            passkey_challenge: ActiveValue::unchanged(self.passkey_challenge),
+            passkey_challenge_expiration: ActiveValue::unchanged(self.passkey_challenge_expiration),
+            created_at: ActiveValue::unchanged(self.created_at),
+            updated_at: ActiveValue::unchanged(self.updated_at),
+        }
     }
 }
