@@ -62,6 +62,30 @@ export interface LoginResponse {
   is_verified: boolean;
 }
 
+export interface CreationChallengeResponse {
+  challenge: string;
+  user: {
+    id: string;
+    name: string;
+  };
+}
+
+export interface RegistrationFinishResponse {
+  status: string;
+  message: string;
+}
+
+export interface RequestChallengeResponse {
+  challenge: string;
+}
+
+export interface AuthenticationFinishResponse {
+  status: string;
+  message: string;
+  token: string;
+  user: { id: number; email: string; name: string; verified: boolean };
+}
+
 class ApiClient {
   private baseUrl: string;
   private token: string | null = null;
@@ -169,28 +193,28 @@ export const getClothings = async (): Promise<Clothing[]> => {
   return response.clothings;
 };
 
-export const passkeyRegistrationStart = async (email: string): Promise<any> => {
+export const passkeyRegistrationStart = async (email: string): Promise<CreationChallengeResponse> => {
   return apiClient.request('/passkey/registration/start', {
     method: 'POST',
     body: JSON.stringify({ email }),
   });
 };
 
-export const passkeyRegistrationFinish = async (email: string, credential: any): Promise<any> => {
+export const passkeyRegistrationFinish = async (email: string, credential: any): Promise<RegistrationFinishResponse> => {
   return apiClient.request('/passkey/registration/finish', {
     method: 'POST',
     body: JSON.stringify({ email, credential }),
   });
 };
 
-export const passkeyAuthenticationStart = async (email: string): Promise<any> => {
+export const passkeyAuthenticationStart = async (email: string): Promise<RequestChallengeResponse> => {
   return apiClient.request('/passkey/authentication/start', {
     method: 'POST',
     body: JSON.stringify({ email }),
   });
 };
 
-export const passkeyAuthenticationFinish = async (email: string, credential: any): Promise<any> => {
+export const passkeyAuthenticationFinish = async (email: string, credential: any): Promise<AuthenticationFinishResponse> => {
   return apiClient.request('/passkey/authentication/finish', {
     method: 'POST',
     body: JSON.stringify({ email, credential }),
