@@ -12,6 +12,7 @@ const nextConfig: NextConfig = {
   experimental: {
     serverComponentsExternalPackages: ['@simplewebauthn/browser'],
   },
+  output: 'standalone',
 };
 
 export default nextConfig;
