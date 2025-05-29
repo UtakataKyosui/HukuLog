@@ -168,6 +168,34 @@ export const getClothings = async (): Promise<Clothing[]> => {
   const response = await apiClient.getClothings();
   return response.clothings;
 };
+
+export const passkeyRegistrationStart = async (email: string): Promise<any> => {
+  return apiClient.request('/passkey/registration/start', {
+    method: 'POST',
+    body: JSON.stringify({ email }),
+  });
+};
+
+export const passkeyRegistrationFinish = async (email: string, credential: any): Promise<any> => {
+  return apiClient.request('/passkey/registration/finish', {
+    method: 'POST',
+    body: JSON.stringify({ email, credential }),
+  });
+};
+
+export const passkeyAuthenticationStart = async (email: string): Promise<any> => {
+  return apiClient.request('/passkey/authentication/start', {
+    method: 'POST',
+    body: JSON.stringify({ email }),
+  });
+};
+
+export const passkeyAuthenticationFinish = async (email: string, credential: any): Promise<any> => {
+  return apiClient.request('/passkey/authentication/finish', {
+    method: 'POST',
+    body: JSON.stringify({ email, credential }),
+  });
+};
 export const createClothing = async (clothing: CreateClothingRequest): Promise<Clothing> => {
   // Get token from localStorage
   const token = localStorage.getItem('token');
