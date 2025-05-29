@@ -14,8 +14,10 @@ FROM debian:bookworm-slim AS runtime
 
 WORKDIR /app
 
-COPY --from=builder /app/target/release/backend ./
+COPY --from=builder /app/target/release/backend-cli ./
 
 EXPOSE 8000
 
-CMD ["./backend"]
+
+
+CMD ["./backend-cli"]\n

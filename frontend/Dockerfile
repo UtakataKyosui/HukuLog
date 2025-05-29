@@ -16,12 +16,11 @@ WORKDIR /app
 
 ENV NODE_ENV production
 
-COPY package*.json ./
-RUN npm install --only=production
-
-COPY .next ./.next
-COPY public ./public
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/node_modules ./node_modules
 
 EXPOSE 3000
 
-CMD ["npm", "start"]
+CMD ["npm", "start"]\n
