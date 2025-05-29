@@ -23,6 +23,7 @@ services:
       - "5151:5151"
     environment:
       - RUST_LOG=info
+26	      - HOST=0.0.0.0
       - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
     depends_on:
       db:
