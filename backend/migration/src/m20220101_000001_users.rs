@@ -19,14 +19,10 @@ impl MigrationTrait for Migration {
                 ("name", ColType::String),
                 ("reset_token", ColType::StringNull),
                 ("reset_sent_at", ColType::TimestampWithTimeZoneNull),
-                ("email_verification_token", ColType::StringNull),
-                (
-                    "email_verification_sent_at",
-                    ColType::TimestampWithTimeZoneNull,
-                ),
-                ("email_verified_at", ColType::TimestampWithTimeZoneNull),
-                ("magic_link_token", ColType::StringNull),
-                ("magic_link_expiration", ColType::TimestampWithTimeZoneNull),
+                // Passkey認証用フィールド
+                ("passkey_credentials", ColType::JsonNull),
+                ("passkey_challenge", ColType::StringNull),
+                ("passkey_challenge_expiration", ColType::TimestampWithTimeZoneNull),
             ],
             &[],
         )
