@@ -21,8 +21,6 @@ pub struct ResetParams {
     pub password: String,
 }
 
-
-
 /// Register function creates a new user with the given parameters and sends a
 /// welcome email to the user
 #[debug_handler]
@@ -44,29 +42,7 @@ async fn register(
         }
     };
 
-    let user = user
-        .into_active_model()
-        .set_email_verification_sent(&ctx.db)
-        .await?;
-
     AuthMailer::send_welcome(&ctx, &user).await?;
-
-    format::json(())
-}
-
-/// Verify register user. if the user not verified his email, he can't login to
-/// the system.
-#[debug_handler]
-async fn verify(State(ctx): State<AppContext>, Path(token): Path<String>) -> Result<Response> {
-    let user = users::Model::find_by_verification_token(&ctx.db, &token).await?;
-
-    if user.email_verified_at.is_some() {
-        tracing::info!(pid = user.pid.to_string(), "user already verified");
-    } else {
-        let active_model = user.into_active_model();
-        let user = active_model.verified(&ctx.db).await?;
-        tracing::info!(pid = user.pid.to_string(), "user verified");
-    }
 
     format::json(())
 }
@@ -119,7 +95,7 @@ async fn login(State(ctx): State<AppContext>, Json(params): Json<LoginParams>) -
     tracing::info!("Login attempt for email: {}", params.email);
     
     let user = users::Model::find_by_email(&ctx.db, &params.email).await?;
-    tracing::info!("User found: {}, email_verified_at: {:?}", user.email, user.email_verified_at);
+    tracing::info!("User found: {}", user.email);
 
     let valid = user.verify_password(&params.password);
     tracing::info!("Password valid: {}", valid);
@@ -127,12 +103,6 @@ async fn login(State(ctx): State<AppContext>, Json(params): Json<LoginParams>) -
     if !valid {
         tracing::warn!("Invalid password for user: {}", params.email);
         return unauthorized("unauthorized!");
-    }
-
-    // Check if user email is verified
-    if user.email_verified_at.is_none() {
-        tracing::warn!("Email not verified for user: {}", params.email);
-        return unauthorized("email not verified!");
     }
 
     let jwt_secret = ctx.config.get_jwt_config()?;
@@ -151,16 +121,12 @@ async fn current(auth: auth::JWT, State(ctx): State<AppContext>) -> Result<Respo
     format::json(CurrentResponse::new(&user))
 }
 
-
-
 pub fn routes() -> Routes {
     Routes::new()
         .prefix("/api/auth")
         .add("/register", post(register))
-        .add("/verify/{token}", get(verify))
         .add("/login", post(login))
         .add("/forgot", post(forgot))
         .add("/reset", post(reset))
         .add("/current", get(current))
-
 }

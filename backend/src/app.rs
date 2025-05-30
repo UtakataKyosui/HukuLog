@@ -50,7 +50,6 @@ impl Hooks for App {
             .add_route(controllers::auth::routes())
             .add_route(controllers::clothings::routes())
             .add_route(controllers::outfits::routes())
-            .add_route(controllers::passkey::routes())
     }
     async fn connect_workers(ctx: &AppContext, queue: &Queue) -> Result<()> {
         queue.register(DownloadWorker::build(ctx)).await?;

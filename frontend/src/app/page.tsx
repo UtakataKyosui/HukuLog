@@ -15,12 +15,7 @@ import Link from "next/link";
 import { Shirt, Sparkles, Shield, Zap, ArrowRight } from "lucide-react";
 
 export default function Home() {
-	useEffect(() => {
-		document.body.classList.add('overflow-hidden');
-		return () => {
-			document.body.classList.remove('overflow-hidden');
-		}
-	},[])
+
   return (
 	<main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
 		{/* Hero Section */}

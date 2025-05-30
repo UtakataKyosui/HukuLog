@@ -3,6 +3,7 @@
 pub use sea_orm_migration::prelude::*;
 mod m20220101_000001_users;
 mod m20250528_155508_create_clothings;
+mod m20250529_120002_remove_email_verification;
 
 mod m20250527_015826_add_parent_ref_to_categories;
 mod m20250527_020005_add_tag_category_ref_to_tags;
@@ -40,6 +41,10 @@ impl MigratorTrait for Migrator {
             Box::new(m20220101_000001_users::Migration),
             Box::new(m20250528_155508_create_clothings::Migration),
             Box::new(m20250529_025731_add_passkey_fields_to_users::Migration),
+            Box::new(m20250529_031410_remove_magic_link_fields::Migration),
+            Box::new(m20250529_120000_create_outfits::Migration),
+            Box::new(m20250529_120001_create_outfit_clothing::Migration),
+            Box::new(m20250529_120002_remove_email_verification::Migration),
             // Temporarily commented out migrations that reference non-existent tables
             // Box::new(m20250527_015826_add_parent_ref_to_categories::Migration),
             // Box::new(m20250527_020005_add_tag_category_ref_to_tags::Migration),
@@ -63,10 +68,6 @@ impl MigratorTrait for Migrator {
             // Box::new(m20250527_024308_add_user_ref_to_wear_histories::Migration),
             // Box::new(m20250527_024438_add_clothing_ref_to_wear_histories::Migration),
             // Box::new(m20250527_024612_add_outfit_ref_to_wear_histories::Migration),
-            Box::new(m20250529_031410_remove_magic_link_fields::Migration),
-            Box::new(m20250529_120000_create_outfits::Migration),
-            Box::new(m20250529_120001_create_outfit_clothing::Migration),
-
             // inject-above (do not remove this comment)
         ]
     }
