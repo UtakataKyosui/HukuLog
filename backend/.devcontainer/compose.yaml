@@ -18,12 +18,6 @@ services:
       - target-cache:/workspaces/target
     env_file:
       - .env
-    environment:
-      - name=value
-      - CARGO_TARGET_DIR=/workspaces/target
-      - CARGO_HOME=/usr/local/cargo
-      - RUST_LOG=debug
-      - USER=vscode
     ports:
       - "5150:5150"
     # メモリとCPU制限を適切に設定

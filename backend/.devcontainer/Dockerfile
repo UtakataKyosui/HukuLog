@@ -7,6 +7,7 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive
 # 必要なパッケージを一括インストール
 RUN apt-get -y install --no-install-recommends \
     postgresql-client \
+	build-essential \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
