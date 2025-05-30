@@ -3,7 +3,82 @@
     "dockerComposeFile": "compose.yaml",
     "service": "app",
     "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
-    "forwardPorts": [
-        5150
-    ]
+    "forwardPorts": [5150, 5432, 6379, 1080, 1025],
+    
+    // VS Code拡張機能の事前インストール
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "rust-lang.rust-analyzer",
+                "vadimcn.vscode-lldb",
+                "tamasfe.even-better-toml",
+                "serayuzgur.crates",
+                "fill-labs.dependi"
+            ],
+            "settings": {
+                // Rust Analyzer設定
+                "rust-analyzer.cargo.buildScripts.enable": true,
+                "rust-analyzer.procMacro.enable": true,
+                "rust-analyzer.checkOnSave.command": "clippy",
+                // ファイル監視の最適化
+                "files.watcherExclude": {
+                    "**/target/**": true,
+                    "**/.git/**": true,
+                    "**/node_modules/**": true
+                },
+                // 自動保存設定
+                "files.autoSave": "afterDelay",
+                "files.autoSaveDelay": 1000
+            }
+        }
+    },
+    
+    // コンテナ作成後の実行コマンド
+    "postCreateCommand": "echo 'DevContainer setup complete!'",
+    
+    // 起動後の実行コマンド（毎回実行）
+    "postStartCommand": "echo 'Welcome to Loco development environment!'",
+    
+    // VS Code環境での追加設定
+    "mounts": [
+        // SSH鍵のマウント（必要に応じて）
+        "source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached",
+        // Git設定のマウント
+        "source=${localEnv:HOME}/.gitconfig,target=/home/vscode/.gitconfig,type=bind,consistency=cached"
+    ],
+    
+    // 開発用環境変数
+    "containerEnv": {
+        "RUST_LOG": "debug",
+        "CARGO_TERM_COLOR": "always"
+    },
+    
+    // DevContainerの機能有効化
+    "features": {
+        "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+        "ghcr.io/devcontainers/features/github-cli:1": {}
+    },
+    
+    // リモートユーザー設定
+    "remoteUser": "vscode",
+    
+    // ポート転送の詳細設定
+    "portsAttributes": {
+        "5150": {
+            "label": "Loco Server",
+            "onAutoForward": "notify"
+        },
+        "5432": {
+            "label": "PostgreSQL",
+            "onAutoForward": "silent"
+        },
+        "6379": {
+            "label": "Redis",
+            "onAutoForward": "silent"
+        },
+        "1080": {
+            "label": "MailTutan Web",
+            "onAutoForward": "openBrowser"
+        }
+    }
 }
