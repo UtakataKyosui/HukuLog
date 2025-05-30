@@ -1,0 +1,45 @@
+# Git関連
+.git
+.gitignore
+.gitattributes
+
+# DevContainer関連
+.devcontainer
+compose.yaml
+Dockerfile
+
+# Rust関連
+target/
+**/*.rs.bk
+Cargo.lock
+
+# IDE関連
+.vscode/
+.idea/
+
+# ログファイル
+*.log
+
+# 一時ファイル
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# ドキュメント
+README.md
+docs/
+*.md
+
+# テスト関連
+tests/fixtures/
+tests/snapshots/
+
+# 依存関係
+node_modules/
+
+# 環境変数（必要なもの以外）
+.env.local
+.env.development
+.env.production
