@@ -1,4 +1,30 @@
-# HukuLog
+# 🗄️ HukuLog (ARCHIVED)
+
+> **⚠️ このリポジトリはアーカイブされました**  
+> 開発は [UtakataKyosui/HukuLog](https://github.com/UtakataKyosui/HukuLog) (旧: ClaudeCoded-DigitalCloset) に統合されました。
+
+---
+
+## 📦 アーカイブ理由
+
+複数の服管理アプリリポジトリが存在していたため、以下の統合戦略により一つのリポジトリに集約しました：
+
+- **統合先**: ClaudeCoded-DigitalCloset → HukuLog にリネーム
+- **技術スタック**: Next.js T3 Stack (TypeScript + tRPC + Drizzle ORM)
+- **移植要素**: CI/CD設定、Issueテンプレート、データベース設計
+
+## 🔄 移行完了事項
+
+- ✅ GitHub Actions ワークフロー
+- ✅ Issue/PR テンプレート  
+- ✅ データベーススキーマ設計
+- ✅ WebAuthn認証実装の参考
+- ✅ 将来のLoco.rs移行計画をIssueに記録
+
+---
+
+## 📚 元の内容
+
 前から話してた電子クローゼット。
 コーデ管理が簡単に！みたいなやつ
 
@@ -152,4 +178,3 @@ HukuLogは**Passkey認証**を採用しており、パスワード不要で安�
 
 * コーデ単位でのお気に入り
 * こちらも `user_id` + `outfit_id` にユニーク制約を設けると◎
-
